@@ -47,9 +47,8 @@ void add_pid(pMap *a, DWORD pid) {
 bool check_pid(pMap *a, DWORD pid) {
     if (pid) {
         for (size_t i=0; i<a->targeted_size; i++) {
-            if (a->targeted[i] == pid) {
+            if (a->targeted[i] == pid)
                 return false;
-            }
         }
         return true;
     }
