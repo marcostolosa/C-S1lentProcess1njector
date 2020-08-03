@@ -5,7 +5,7 @@
 #include <tlhelp32.h>
 #include "rc4.h"
 
-// Enter amount of targets below.
+// "targets" array length macro.
 #define MAX_TARGETS 4
 #define RC4KEY "<enter rc4 key here>"
 
