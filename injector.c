@@ -44,7 +44,7 @@ void add_pid(pMap *a, DWORD pid) {
     a->targeted[a->targeted_size++] = pid;
 }
 
-// Function to check whether pid evaluates to true or if pid has already been targeted/inside "targeted" array.
+// Function to check whether pid evaluates to true or if pid has already been added to "targeted" array.
 bool check_pid(pMap *a, DWORD pid) {
     if (pid) {
         for (size_t i=0; i<a->targeted_size; i++) {
