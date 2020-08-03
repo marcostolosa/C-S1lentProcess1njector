@@ -19,7 +19,7 @@ static const LPCSTR targets[] = {
 typedef struct {
     // Each pid will be stored at the index of corresponding process name index in "targets" array.
     DWORD pids[MAX_TARGETS];
-    // Array of DWORDs to track targeted pids to prevent repititive process injection.
+    // Array of DWORDs to track targeted pids to prevent repetitive process injection.
     DWORD *targeted;
     size_t targeted_size;
 } pMap;
