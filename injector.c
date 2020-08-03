@@ -72,7 +72,6 @@ DWORD filter_pid(LPCSTR pname) {
     return 0;
 }
 
-// Thread to scan for target pids.
 DWORD WINAPI scan_pids(LPVOID *lpParameter) {
     pMap *a = (pMap*)lpParameter;
     while (true) {
