@@ -157,7 +157,7 @@ int main() {
     unsigned char shellcode[] = 
     < enter shellcode here >
     
-    // Instantiate a instance of pMap structure to track pids and targeted pids with all member values zero'd.
+    // Instantiate a instance of pMap structure to track pids and targeted pids with all member values set to zero.
     pMap a = { {0}, {0}, 0 };
 
     // Thread to Scan for pids.
