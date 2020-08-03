@@ -33,7 +33,7 @@ typedef NTSTATUS(NTAPI* _NtWriteVirtualMemory)(
                         PULONG NumberOfBytesWritten
                         );
 
-// Function to dynamically add pids to targeted array.
+// Function to dynamically add pids to "targeted" array.
 void add_pid(pMap *a, DWORD pid) {
     if (a->targeted_size > 0) {
         a->targeted = realloc(a->targeted, a->targeted_size+1 * sizeof(DWORD));
