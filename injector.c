@@ -1,6 +1,5 @@
 // Coded by s1ege, greetz to all #GSH members.
 #include <windows.h>
-#include <stdio.h>
 #include <stdbool.h>
 #include <tlhelp32.h>
 #include "rc4.h"
