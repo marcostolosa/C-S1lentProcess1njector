@@ -8,7 +8,7 @@
 #define MAX_TARGETS 4
 #define RC4KEY "<enter rc4 key here>"
 
-static const LPCSTR targets[] = {
+const LPCSTR targets[] = {
                         "OneDrive.exe",
                         "Telegram.exe",
                         "Messenger.exe",
