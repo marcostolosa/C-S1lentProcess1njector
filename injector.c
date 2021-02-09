@@ -32,7 +32,7 @@ typedef NTSTATUS(NTAPI* _NtWriteVirtualMemory)(
                         PULONG NumberOfBytesWritten
                         );
 
-// Function to dynamically add pids to "targeted" array.
+// Dynamically add pids to "targeted" array.
 void add_pid(pMap *a, DWORD pid) {
     if (a->targeted_size) {
         a->targeted = realloc(a->targeted, a->targeted_size+1 * sizeof(DWORD));
@@ -43,7 +43,7 @@ void add_pid(pMap *a, DWORD pid) {
     a->targeted[a->targeted_size++] = pid;
 }
 
-// Function to check whether pid evaluates to true or if pid has already been added to "targeted" array.
+// Check whether pid evaluates to true or if pid has already been added to "targeted" array.
 bool check_pid(pMap *a, DWORD pid) {
     if (pid) {
         for (size_t i=0; i<a->targeted_size; i++) {
@@ -55,7 +55,7 @@ bool check_pid(pMap *a, DWORD pid) {
     return false;
 }
 
-// Function to filter the target processes' corresponding pid.
+// Filter the target processes' corresponding pid.
 DWORD filter_pid(LPCSTR pname) {
     PROCESSENTRY32 pt;
     HANDLE hsnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
